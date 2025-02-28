@@ -1,5 +1,12 @@
 {
+  "bin": "js/index.js",
+  "pkg": {
+    "targets": [
+      "node16-win-x64"
+    ]
+  },
   "scripts": {
+    "serve": "node ./js/index.js",
     "start": "ts-node index.ts"
   },
   "dependencies": {
