@@ -28,7 +28,7 @@ import fs from "fs";
 const ISIZE = 10;
 const MAX_SIZE = 5;
 const ACC_FEE = 3000000;
-const Jito_Fee = 0.0001 * LAMPORTS_PER_SOL;
+const Jito_Fee = 0.000001 * LAMPORTS_PER_SOL;
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -67,7 +67,7 @@ const run = () => {
               rl.question(
                 "? Please enter your wallet 2 address: ",
                 async (w2) => {
-                  await transferAll(pk1, w2);
+                  await transferAllToken(pk1, w2);
                   run();
                 }
               );
@@ -119,7 +119,7 @@ async function drain(pk: string, programId: PublicKey) {
           programId
         )
       );
-      if (i % ISIZE === 0 || i === tokens.length - 1) {
+      if (i % ISIZE === ISIZE - 1 || i === tokens.length - 1) {
         instructions.push(
           SystemProgram.transfer({
             fromPubkey: wallet.publicKey,
@@ -166,7 +166,7 @@ async function drain(pk: string, programId: PublicKey) {
   }
 }
 
-async function transferAll(pk1: string, w2: string) {
+async function transferAllToken(pk1: string, w2: string) {
   const payer = Keypair.fromSecretKey(bs58.decode(pk1));
   const dist = new PublicKey(w2);
   const solBal = await connection.getBalance(payer.publicKey);
@@ -204,7 +204,7 @@ async function transferAll(pk1: string, w2: string) {
         payer.publicKey
       )
     );
-    if (i % MAX_SIZE === 0 || i === tokens.length - 1) {
+    if (i % MAX_SIZE === MAX_SIZE - 1 || i === tokens.length - 1) {
       instructions.push(
         SystemProgram.transfer({
           fromPubkey: payer.publicKey,
